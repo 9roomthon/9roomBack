@@ -1,0 +1,19 @@
+{
+  "name": "9roomback",
+  "version": "1.0.0",
+  "description": "구름톤 사이드프로젝트를 위한 백엔드 레포",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/9roomthon/9roomBack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/9roomthon/9roomBack/issues"
+  },
+  "homepage": "https://github.com/9roomthon/9roomBack#readme"
+}
