@@ -24,7 +24,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use();
 
 app.use('/', () => {
   console.log('Hi');
