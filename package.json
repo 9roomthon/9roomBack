@@ -4,16 +4,51 @@
   "description": "구름톤 사이드프로젝트를 위한 백엔드 레포",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/index",
+    "dev": "nodemon --exec babel-node ./src/index",
+    "test": "jest",
+    "lint": "eslint . --ext .js --fix",
+    "format": "prettier --write \"**/*.{js,json}\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/9roomthon/9roomBack.git"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/9roomthon/9roomBack/issues"
   },
-  "homepage": "https://github.com/9roomthon/9roomBack#readme"
+  "homepage": "https://github.com/9roomthon/9roomBack#readme",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "google-auth-library": "^9.14.1",
+    "helmet": "^7.1.0",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.3",
+    "passport-google-oauth20": "^2.0.0",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.25.6",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "eslint": "^9.11.1",
+    "husky": "^9.1.6",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.2.10",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
+  }
 }
