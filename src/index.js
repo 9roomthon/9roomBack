@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const db = require('../models');
 
 dotenv.config();
 
@@ -24,6 +25,13 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log('DB has connected!');
+  })
+  .catch((err) => console.error(err));
 
 app.use('/', () => {
   console.log('Hi');
