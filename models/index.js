@@ -1,5 +1,8 @@
 const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development'; // 지정된 환경변수가 없으면 'development'로 지정
+const User = require('./user');
+const Translation = require('./translation');
+const Summary = require('./summary');
 
 // config/config.json 파일에 있는 설정값들을 불러온다.
 // config객체의 env변수(development)키 의 객체값들을 불러온다.
@@ -20,5 +23,16 @@ const sequelize = new Sequelize(
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.User = User;
+db.Translation = Translation;
+db.Summary = Summary;
+
+User.initiate(sequelize);
+Translation.initiate(sequelize);
+Summary.initiate(sequelize);
+
+User.associate(db);
+Translation.associate(db);
+Summary.associate(db);
 // 모듈로 꺼낸다.
 module.exports = db;
