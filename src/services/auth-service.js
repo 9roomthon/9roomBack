@@ -1,12 +1,16 @@
 const { OAuth2Client } = require('google-auth-library');
-
-const client = new OAuth2Client(process.env.CLIENT_ID);
+const jwt = require('jsonwebtoken');
+const User = require('../../models/user');
+const client = new OAuth2Client(
+  process.env.CLIENT_ID,
+  process.env.CLIENT_SECRET,
+  process.env.REDIRECT_URI
+);
 
 exports.getGoogleAuthUrl = () => {
   const authUrl = client.generateAuthUrl({
     access_type: 'offline',
     scope: ['openid', 'profile', 'email'],
-    redirect_uri: process.env.REDIRECT_URI,
   });
 
   return authUrl;
@@ -22,9 +26,27 @@ exports.getGoogleUserData = async (code) => {
   });
 
   const payload = ticket.getPayload();
+
+  let user = await User.findOne({ where: { googleId: payload.sub } });
+
+  if (!user) {
+    user = await User.create({
+      googleId: payload.sub,
+      email: payload.email,
+      name: payload.name,
+    });
+  }
+
+  const jwtToken = this.createJwtToken(user);
+
   return {
-    userId: payload['sub'],
-    email: payload.email,
-    name: payload.name,
+    user,
+    jwtToken,
   };
+};
+
+exports.createJwtToken = (user) => {
+  const payload = { userId: user.id, email: user.email };
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+  return token;
 };

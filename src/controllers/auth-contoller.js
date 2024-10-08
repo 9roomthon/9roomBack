@@ -10,11 +10,12 @@ exports.googleCallback = async (req, res) => {
   try {
     const { code } = req.query;
 
-    const userData = await authService.getGoogleUserData(code);
+    const { user, jwtToken } = await authService.getGoogleUserData(code);
 
     return res.status(StatusCodes.OK).json({
       success: true,
-      user: userData,
+      user,
+      token: jwtToken,
     });
   } catch (err) {
     return res.status(StatusCodes.BAD_REQUEST).json({
