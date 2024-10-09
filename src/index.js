@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const db = require('../models');
 const authRouter = require('./routes/auth-route');
+const translateRouter = require('./routes/translate-route');
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ db.sequelize
   .catch((err) => console.error(err));
 
 app.use('/auth', authRouter);
+app.use('/translate', translateRouter);
 
 app.listen(app.get('port'), () => {
   console.log(`Server is running on http://localhost:${app.get('port')}/`);

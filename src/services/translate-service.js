@@ -8,10 +8,10 @@ exports.createTranslation = async (userId, text, sourceLang, targetLang) => {
     const translatedText = await callGPTApi(prompt);
     Translation.create({
       userId,
-      text,
-      sourceLang,
-      targetLang,
-      translatedText,
+      original_text: text,
+      translated_text: translatedText,
+      source_language: sourceLang,
+      target_language: targetLang,
     });
 
     return translatedText;

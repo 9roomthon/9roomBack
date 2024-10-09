@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const translateService = require('../services/translate-service');
 
 exports.handleTranslation = async (req, res) => {
-  const { text, sourceLang, targetLang } = req.query;
+  const { text, sourceLang, targetLang } = req.body;
 
   if (!text || !sourceLang || !targetLang) {
     return res.status(StatusCodes.BAD_REQUEST).json({
@@ -20,6 +20,7 @@ exports.handleTranslation = async (req, res) => {
     );
     res.status(StatusCodes.OK).json({ translated_text: gptResponse });
   } catch (err) {
+    console.error(err);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Internal Server Error' });
