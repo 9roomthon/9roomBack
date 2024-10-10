@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const db = require('../models');
 const authRouter = require('./routes/auth-route');
 const translateRouter = require('./routes/translate-route');
-
+const summaryRouter = require('./routes/summary-route');
 dotenv.config();
 
 const app = express();
@@ -37,6 +37,7 @@ db.sequelize
 
 app.use('/auth', authRouter);
 app.use('/translate', translateRouter);
+app.use('/summarize', summaryRouter);
 
 app.listen(app.get('port'), () => {
   console.log(`Server is running on http://localhost:${app.get('port')}/`);

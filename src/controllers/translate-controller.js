@@ -11,14 +11,14 @@ exports.handleTranslation = async (req, res) => {
   }
 
   try {
-    const userId = req.userId;
+    const userId = 1;
     const gptResponse = await translateService.createTranslation(
       userId,
       text,
       sourceLang,
       targetLang
     );
-    res.status(StatusCodes.OK).json({ translated_text: gptResponse });
+    return res.status(StatusCodes.OK).json({ translated_text: gptResponse });
   } catch (err) {
     console.error(err);
     return res
