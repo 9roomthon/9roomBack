@@ -17,10 +17,6 @@ class Translation extends Sequelize.Model {
           type: DataTypes.TEXT,
           allowNull: false,
         },
-        source_language: {
-          type: DataTypes.STRING(10),
-          allowNull: false,
-        },
         target_language: {
           type: DataTypes.STRING(10),
           allowNull: false,

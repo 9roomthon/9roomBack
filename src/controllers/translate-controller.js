@@ -2,9 +2,9 @@ const { StatusCodes } = require('http-status-codes');
 const translateService = require('../services/translate-service');
 
 exports.handleTranslation = async (req, res) => {
-  const { text, sourceLang, targetLang } = req.body;
+  const { text, targetLang } = req.body;
 
-  if (!text || !sourceLang || !targetLang) {
+  if (!text || !targetLang) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       error: 'Missing Required Parameters: text, sourceLang, targetLang',
     });
@@ -15,7 +15,6 @@ exports.handleTranslation = async (req, res) => {
     const gptResponse = await translateService.createTranslation(
       userId,
       text,
-      sourceLang,
       targetLang
     );
     return res.status(StatusCodes.OK).json({ translated_text: gptResponse });
