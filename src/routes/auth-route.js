@@ -3,8 +3,6 @@ const authController = require('../controllers/auth-contoller');
 
 const authRouter = express.Router();
 
-authRouter.get('/google', authController.googleLogin);
-
-authRouter.get('/google/callback', authController.googleCallback);
+authRouter.post('/save-user', authController.saveGoogleUser);
 
 module.exports = authRouter;

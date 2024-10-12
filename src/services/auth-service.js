@@ -7,42 +7,44 @@ const client = new OAuth2Client(
   process.env.REDIRECT_URI
 );
 
-exports.getGoogleAuthUrl = () => {
-  const authUrl = client.generateAuthUrl({
-    access_type: 'offline',
-    scope: ['openid', 'profile', 'email'],
-  });
+exports.getGoogleUserDataFromAccessToken = async (accessToken) => {
+  try {
+    const response = await axios.get(
+      'https://www.googleapis.com/oauth2/v1/userinfo?alt=json',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
-  return authUrl;
-};
+    const userData = response.data;
 
-exports.getGoogleUserData = async (code) => {
-  const { tokens } = await client.getToken(code);
-  client.setCredentials(tokens);
-
-  const ticket = await client.verifyIdToken({
-    idToken: tokens.id_token,
-    audience: process.env.CLIENT_ID,
-  });
-
-  const payload = ticket.getPayload();
-
-  let user = await User.findOne({ where: { googleId: payload.sub } });
-
-  if (!user) {
-    user = await User.create({
-      googleId: payload.sub,
-      email: payload.email,
-      name: payload.name,
+    let user = await User.findOne({
+      where: { googleId: this.getGoogleUserDataFromAccessToken.id },
     });
+
+    if (!user) {
+      user = User.create({
+        googleId: userData.id,
+        email: userData.email,
+        name: userData.name,
+        accessToken: accessToken,
+      });
+    } else {
+      await user.update({ accessToken });
+    }
+
+    const jwtToken = this.createJwtToken(user);
+
+    return {
+      user,
+      jwtToken,
+    };
+  } catch (err) {
+    console.error(err);
+    throw new Error('Failed to fetch Google user info');
   }
-
-  const jwtToken = this.createJwtToken(user);
-
-  return {
-    user,
-    jwtToken,
-  };
 };
 
 exports.createJwtToken = (user) => {
