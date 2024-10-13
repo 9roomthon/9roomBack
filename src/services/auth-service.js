@@ -1,11 +1,7 @@
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/user');
-const client = new OAuth2Client(
-  process.env.CLIENT_ID,
-  process.env.CLIENT_SECRET,
-  process.env.REDIRECT_URI
-);
+const axios = require('axios');
 
 exports.getGoogleUserDataFromAccessToken = async (accessToken) => {
   try {
@@ -19,9 +15,14 @@ exports.getGoogleUserDataFromAccessToken = async (accessToken) => {
     );
 
     const userData = response.data;
+    if (!userData) {
+      console.log('no data');
+    } else {
+      console.log(userData);
+    }
 
     let user = await User.findOne({
-      where: { googleId: this.getGoogleUserDataFromAccessToken.id },
+      where: { googleId: userData.id },
     });
 
     if (!user) {
@@ -35,7 +36,7 @@ exports.getGoogleUserDataFromAccessToken = async (accessToken) => {
       await user.update({ accessToken });
     }
 
-    const jwtToken = this.createJwtToken(user);
+    const jwtToken = exports.createJwtToken(user);
 
     return {
       user,
@@ -43,7 +44,7 @@ exports.getGoogleUserDataFromAccessToken = async (accessToken) => {
     };
   } catch (err) {
     console.error(err);
-    throw new Error('Failed to fetch Google user info');
+    throw new Error(err.message);
   }
 };
 

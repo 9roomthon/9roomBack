@@ -10,7 +10,7 @@ exports.handleSummarization = async (req, res) => {
   }
 
   try {
-    const userId = 1;
+    const userId = req.user.userId;
     const gptResponse = await summaryService.createSummarization(
       userId,
       text,

@@ -22,7 +22,7 @@ exports.saveGoogleUser = async (req, res) => {
   } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: 'Internal Server Error',
+      message: err.message,
     });
   }
 };

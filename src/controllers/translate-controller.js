@@ -11,7 +11,7 @@ exports.handleTranslation = async (req, res) => {
   }
 
   try {
-    const userId = 1;
+    const userId = req.user.userId;
     const gptResponse = await translateService.createTranslation(
       userId,
       text,

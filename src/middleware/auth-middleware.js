@@ -2,22 +2,23 @@ const { StatusCodes } = require('http-status-codes');
 const jwt = require('jsonwebtoken');
 
 exports.verifyToken = (req, res, next) => {
-  const token = req.headers['authrization'];
+  const token = req.headers['authorization']; // 오타 수정
 
   if (!token) {
     return res
-      .status(StatusCodes.NOT_ACCEPTABLE)
+      .status(StatusCodes.UNAUTHORIZED) // 상태 코드 수정
       .json({ error: 'No token provided' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  jwt.verify(token.split(' ')[1], process.env.JWT_SECRET, (err, decoded) => {
+    // Bearer token 분리
     if (err) {
       return res
-        .status(StatusCodes.NOT_ACCEPTABLE)
+        .status(StatusCodes.FORBIDDEN) // 상태 코드 수정
         .json({ error: 'Failed to authenticate token' });
     }
 
-    req.userId = decoded.userId;
+    req.user = { userId: decoded.userId }; // req.user에 정보 저장
     next();
   });
 };
