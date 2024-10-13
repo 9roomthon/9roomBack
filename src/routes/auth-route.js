@@ -3,6 +3,6 @@ const authController = require('../controllers/auth-contoller');
 
 const authRouter = express.Router();
 
-authRouter.post('/save-user', authController.saveGoogleUser);
+authRouter.post('/convert-token', authController.saveGoogleUser);
 
 module.exports = authRouter;
