@@ -15,11 +15,6 @@ exports.getGoogleUserDataFromAccessToken = async (accessToken) => {
     );
 
     const userData = response.data;
-    if (!userData) {
-      console.log('no data');
-    } else {
-      console.log(userData);
-    }
 
     let user = await User.findOne({
       where: { googleId: userData.id },
@@ -43,7 +38,6 @@ exports.getGoogleUserDataFromAccessToken = async (accessToken) => {
       jwtToken,
     };
   } catch (err) {
-    console.error(err);
     throw new Error(err.message);
   }
 };

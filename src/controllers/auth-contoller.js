@@ -11,8 +11,7 @@ exports.saveGoogleUser = async (req, res) => {
       });
     }
 
-    const { user, jwtToken } =
-      await authService.getGoogleUserDataFromAccessToken(accessToken);
+    const { user, jwtToken } = await authService.saveUser(accessToken);
 
     return res.status(StatusCodes.OK).json({
       success: true,
