@@ -5,7 +5,7 @@ module.exports = {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD, // 환경 변수에서 비밀번호를 로드
     database: process.env.DB_NAME,
-    host: '127.0.0.1',
+    host: process.env.DB_HOST,
     dialect: 'mysql',
   },
   test: {
